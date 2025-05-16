@@ -108,26 +108,12 @@ export function TicketForm({
                         }
                     }));
                 }}
-                options={passengers
-                    .filter((_, i) => i < 10)
-                    .map(passenger => ({
-                        value: passenger.id,
-                        label: `${passenger.nik} - ${passenger.namaLengkap.namaDepan} ${passenger.namaLengkap.namaBelakang}`
-                    }))}
+                options={passengers.map(passenger => ({
+                    value: passenger.id,
+                    label: `${passenger.nik} - ${passenger.namaLengkap.namaDepan} ${passenger.namaLengkap.namaBelakang}`
+                }))}
                 error={!!errors.penumpang}
                 helperText={errors.penumpang}
-                searchBy="nik"
-                search={(e) => {
-                    const searchValue = e.target.value;
-                    const filteredPassengers = passengers.filter(passenger => passenger.nik.includes(searchValue));
-                    const filteredOptions = filteredPassengers
-                        .map(passenger => ({
-                            value: passenger.id,
-                            label: `${passenger.nik} - ${passenger.namaLengkap.namaDepan} ${passenger.namaLengkap.namaBelakang}`
-                        }))
-                        .sort((a, b) => a.label.localeCompare(b.label));
-                    setOptions(filteredOptions);
-                }}
             />
 
             <SelectAtom
