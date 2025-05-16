@@ -1,12 +1,12 @@
 import { TextFieldAtom } from "../atoms/TextFieldAtom";
 
-export function AddressFormGroup({
-    street,
-    onChangeStreet,
-    district,
-    onChangeDistrict,
-    city,
-    onChangeCity,
+export function AlamatFormGroup({
+    jalan,
+    onChangeJalan,
+    kelurahan,
+    onChangeKelurahan,
+    kota,
+    onChangeKota,
     error = false,
     helperText = '',
 }) {
@@ -14,25 +14,25 @@ export function AddressFormGroup({
         <div className="space-y-4">
             <TextFieldAtom
                 label="Jalan"
-                name="street"
-                value={street}
-                onChange={onChangeStreet}
+                name="jalan"
+                value={jalan}
+                onChange={onChangeJalan}
                 error={error}
                 helperText={helperText}
             />
             <TextFieldAtom
                 label="Kelurahan/Kecamatan"
-                name="district"
-                value={district}
-                onChange={onChangeDistrict}
+                name="kelurahan"
+                value={kelurahan}
+                onChange={onChangeKelurahan}
                 error={error}
                 helperText={helperText}
             />
             <TextFieldAtom
                 label="Kota"
-                name="city"
-                value={city}
-                onChange={onChangeCity}
+                name="kota"
+                value={kota}
+                onChange={onChangeKota}
                 error={error}
                 helperText={helperText}
             />

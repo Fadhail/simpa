@@ -36,13 +36,13 @@ func InsertPassenger(ctx context.Context, psg models.Passenger) (insertedID inte
 
 func GetPassengerByNIK(ctx context.Context, NIK string) (passenger *models.Passenger, err error) {
 	collection := config.MongoConnect(config.DBName).Collection(config.PassengerCollection)
-	filter := bson.M{"NIK": NIK}
+	filter := bson.M{"nik": NIK}
 	err = collection.FindOne(ctx, filter).Decode(&passenger)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
 			return nil, nil
 		}
-		return nil, fmt.Errorf("get Passenger By NIK: %v", err)
+		return nil, fmt.Errorf("get Passenger By nik: %v", err)
 	}
 	return passenger, nil
 }
@@ -69,7 +69,7 @@ func GetAllPassenger(ctx context.Context) ([]models.Passenger, error) {
 func UpdatePassenger(ctx context.Context, NIK string, update models.Passenger) (updatedNIK string, err error) {
 	collection := config.MongoConnect(config.DBName).Collection(config.PassengerCollection)
 
-	filter := bson.M{"NIK": NIK}
+	filter := bson.M{"nik": NIK}
 	updateData := bson.M{"$set": update}
 
 	result, err := collection.UpdateOne(ctx, filter, updateData)

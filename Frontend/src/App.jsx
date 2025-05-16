@@ -7,6 +7,8 @@ import { SchedulePage } from "./pages/SchedulePage";
 import { TicketPage } from "./pages/TicketPage";
 import { AddPlane } from "./pages/AddPlane";
 import { EditPlane } from "./pages/EditPlane";
+import { AddPassenger } from "./pages/AddPassenger";
+import { EditPassenger } from "./pages/EditPassenger";
 
 export default function App() {
   return (
@@ -20,6 +22,8 @@ export default function App() {
           <Route path="/tickets" element={<TicketPage />} />
           <Route path="/planes/add" element={<AddPlane />} />
           <Route path="/planes/edit/:kodePesawat" element={<EditPlane />} />
+          <Route path="/passengers/add" element={<AddPassenger />} />
+          <Route path="/passengers/edit/:nik" element={<EditPassenger />} />
         </Routes>
       </LayoutDashboard>
     </Router>

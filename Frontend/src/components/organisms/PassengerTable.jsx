@@ -2,6 +2,7 @@ import { Card } from "@material-tailwind/react";
 import { ButtonAtom } from "../atoms/ButtonAtom";
 import { TypographyAtom } from "../atoms/TypographyAtom";
 import { usePassengers } from "../../hooks/usePassengers";
+import { Link } from "react-router-dom";
 import {
     PencilIcon,
     TrashIcon
@@ -38,9 +39,11 @@ export function PassengerTable() {
     return (
         <Card className="h-full w-full overflow-auto p-6">
             <div className="flex justify-end p-4">
-                <ButtonAtom color="blue">
-                    Tambah Data
-                </ButtonAtom>
+                <Link to="/passengers/add">
+                    <ButtonAtom color="blue" size="sm">
+                        Tambah Penumpang
+                    </ButtonAtom>
+                </Link>
             </div>
 
             <table className="w-full table-auto text-left">
@@ -61,9 +64,9 @@ export function PassengerTable() {
                 </thead>
                 <tbody>
                     {passengers.map((psg) => (
-                        <tr key={psg._id} className="even:bg-blue-gray-50/50 align-top">
+                        <tr key={psg.nik} className="even:bg-blue-gray-50/50 align-top">
                             <td className="p-4">{psg.nik}</td>
-                            <td className="p-4">{psg.namaLengkap}</td>
+                            <td className="p-4">{psg.namaLengkap.namaDepan + ' ' + psg.namaLengkap.namaBelakang}</td>
                             <td className="p-4">{psg.jenisKelamin}</td>
                             <td className="p-4">{psg.tanggalLahir}</td>
                             <td className="p-4">
@@ -72,17 +75,10 @@ export function PassengerTable() {
                             <td className="p-4">{psg.email}</td>
                             <td className="p-4">{psg.telepon}</td>
                             <td className="p-4">
-                                <ButtonAtom color="green" size="sm">
+                            <Link to={`/passengers/edit/${psg.nik}`} className="text-blue-500 hover:text-blue-700 mr-2">
                                     <PencilIcon className="h-5 w-5" />
-                                </ButtonAtom>
-                                <ButtonAtom color="red" size="sm" 
-                                        onClick={() => {
-                                            if (window.confirm("Yakin ingin menghapus penumpang ini?")) {
-                                            deletePassenger(psg.nik);
-                                            }
-                                        }}>
-                                    <TrashIcon className="h-5 w-5" />
-                                </ButtonAtom>
+                            </Link>
+                            <TrashIcon onClick={() => {if (window.confirm("Yakin ingin menghapus penumpang ini?")) {deletePassenger(psg.nik);}}} className="h-5 w-5" />
                             </td>
                         </tr>
                     ))}

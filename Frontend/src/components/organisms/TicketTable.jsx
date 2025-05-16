@@ -69,7 +69,12 @@ export function TicketTable() {
                             <td className="p-4">{tkt.kodeTiket}</td>
                             {/* Menggunakan Collection Passenger */}
                             <td className="p-4">
-                                {passengers?.find((psg) => psg.id === tkt.passengerId)?.namaLengkap || "Unknown"}
+                                {(() => {
+                                    const passenger = passengers?.find((psg) => psg.id === tkt.passengerId);
+                                    return passenger
+                                        ? `${passenger.namaLengkap.namaDepan} ${passenger.namaLengkap.namaBelakang}`
+                                        : "Unknown";
+                                })()}
                             </td>
                             {/* Menggunakan Collection Schedules */}
                             <td className="p-4">
