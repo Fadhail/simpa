@@ -10,7 +10,10 @@ import (
 func TestInsertPassenger(t *testing.T) {
 	passenger := models.Passenger{
 		NIK:          "1111111111111111",
-		NamaLengkap:  "Budi Santoso",
+		NamaLengkap:  models.NamaLengkap{
+			NamaDepan: "Budi",
+			NamaBelakang: "Santoso",
+		},
 		JenisKelamin: "Laki-laki",
 		TanggalLahir: "1995-08-17",
 		Alamat: models.Alamat{

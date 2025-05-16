@@ -5,12 +5,17 @@ import "go.mongodb.org/mongo-driver/bson/primitive"
 type Passenger struct {
 	ID           primitive.ObjectID `bson:"_id,omitempty" json:"id"`
 	NIK          string             `bson:"nik" json:"nik"`
-	NamaLengkap  string             `bson:"namaLengkap" json:"namaLengkap"`
+	NamaLengkap  NamaLengkap        `bson:"namaLengkap" json:"namaLengkap"`
 	JenisKelamin string             `bson:"jenisKelamin" json:"jenisKelamin"`
 	TanggalLahir string             `bson:"tanggalLahir" json:"tanggalLahir"`
 	Alamat       Alamat             `bson:"alamat" json:"alamat"`
 	Email        string             `bson:"email" json:"email"`
 	Telepon      string             `bson:"telepon" json:"telepon"`
+}
+
+type NamaLengkap struct {
+	NamaDepan    string `bson:"namaDepan" json:"namaDepan"`
+	NamaBelakang string `bson:"namaBelakang" json:"namaBelakang"`
 }
 
 type Alamat struct {
