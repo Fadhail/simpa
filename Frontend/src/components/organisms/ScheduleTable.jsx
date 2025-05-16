@@ -11,7 +11,7 @@ import {
 const TABLE_HEAD = ["Kode Penerbangan", "Nama Maskapai", "Asal", "Tujuan", "Waktu Berangkat", "Waktu Tiba", "Status", "Harga Tiket", "Aksi"];
 
 export function ScheduleTable() {
-    const { schedules, loading, error, retry } = useSchedules();
+    const { schedules, loading, error, retry, deleteSchedule } = useSchedules();
     const { planes } = usePlanes();
 
     if (loading) {
@@ -92,7 +92,12 @@ export function ScheduleTable() {
                                 <ButtonAtom color="green" size="sm">
                                     <PencilIcon className="h-5 w-5" />
                                 </ButtonAtom>
-                                <ButtonAtom color="red" size="sm">
+                                <ButtonAtom color="red" size="sm" 
+                                        onClick={() => {
+                                            if (window.confirm("Yakin ingin menghapus jadwal ini?")) {
+                                            deleteSchedule(sdl.kodePenerbangan);
+                                            }
+                                        }}>
                                     <TrashIcon className="h-5 w-5" />
                                 </ButtonAtom>
                             </td>

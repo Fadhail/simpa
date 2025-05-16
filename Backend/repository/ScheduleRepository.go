@@ -86,7 +86,7 @@ func UpdateSchedule(ctx context.Context, kodePenerbangan string, update models.S
 func DeleteSchedule(ctx context.Context, kodePenerbangan string) (deletedKodePenerbangan string, err error) {
 	collection := config.MongoConnect(config.DBName).Collection(config.ScheduleCollection)
 
-	filter := bson.M{"KodePenerbangan": kodePenerbangan}
+	filter := bson.M{"kodePenerbangan": kodePenerbangan}
 	result, err := collection.DeleteOne(ctx, filter)
 	if err != nil {
 		fmt.Printf("Delete Schedule: %v\n", err)

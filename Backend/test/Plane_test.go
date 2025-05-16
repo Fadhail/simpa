@@ -12,10 +12,10 @@ var ctx = context.TODO()
 func TestInsertPlane(t *testing.T) {
 
 	plane := models.Plane{
-		KodePesawat:   "GA123",
-		NamaMaskapai:  "Garuda Indonesia",
-		TipePesawat:   "Boeing 737",
-		Kapasitas:     180,
+		KodePesawat:   "TEST1234",
+		NamaMaskapai:  "Test Airlines",
+		TipePesawat:   "TEst Type",
+		Kapasitas:     190,
 		TahunProduksi: 2010,
 		Status:        "aktif",
 	}

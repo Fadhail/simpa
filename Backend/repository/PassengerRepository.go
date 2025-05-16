@@ -83,17 +83,17 @@ func UpdatePassenger(ctx context.Context, NIK string, update models.Passenger) (
 	return NIK, nil
 }
 
-func DeletePassenger(ctx context.Context, NIK string) (deletedNIK string, err error) {
+func DeletePassenger(ctx context.Context, nik string) (deletedNIK string, err error) {
 	collection := config.MongoConnect(config.DBName).Collection(config.PassengerCollection)
 
-	filter := bson.M{"NIK": NIK}
+	filter := bson.M{"nik": nik}
 	result, err := collection.DeleteOne(ctx, filter)
 	if err != nil {
-		fmt.Printf("NIK: %v\n", err)
+		fmt.Printf("nik: %v\n", err)
 		return "", err
 	}
 	if result.DeletedCount == 0 {
-		return "", fmt.Errorf("tidak ada data yang dihapus untuk Passenger %v", NIK)
+		return "", fmt.Errorf("tidak ada data yang dihapus untuk Passenger %v", nik)
 	}
-	return NIK, nil
+	return nik, nil
 }

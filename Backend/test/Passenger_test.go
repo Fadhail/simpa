@@ -9,7 +9,7 @@ import (
 
 func TestInsertPassenger(t *testing.T) {
 	passenger := models.Passenger{
-		NIK:          "3201010203040506",
+		NIK:          "1111111111111111",
 		NamaLengkap:  "Budi Santoso",
 		JenisKelamin: "Laki-laki",
 		TanggalLahir: "1995-08-17",

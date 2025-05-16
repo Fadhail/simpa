@@ -98,18 +98,18 @@ func UpdateSchedule(c *fiber.Ctx) error {
 
 // Menghapus Data Jadwal
 func DeleteSchedule(c *fiber.Ctx) error {
-	id := c.Params("id")
+	kodePenerbangan := c.Params("kodePenerbangan")
 
-	deletedScheduleID, err := repository.DeleteSchedule(c.Context(), id)
+	deletedScheduleID, err := repository.DeleteSchedule(c.Context(), kodePenerbangan)
 	if err != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-			"error": fmt.Sprintf("Jadwal dengan ID %s tidak ditemukan: %v", id, err),
+			"error": fmt.Sprintf("Jadwal dengan ID %s tidak ditemukan: %v", kodePenerbangan, err),
 		})
 	}
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-		"message": "Jadwal berhasil dihapus",
-		"id":      deletedScheduleID,
-		"status":  fiber.StatusOK,
+		"message":         "Jadwal berhasil dihapus",
+		"kodePenerbangan": deletedScheduleID,
+		"status":          fiber.StatusOK,
 	})
 }

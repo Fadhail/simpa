@@ -10,7 +10,7 @@ import {
 const TABLE_HEAD = ["NIK", "Nama", "Jenis Kelamin", "Tanggal Lahir", "Alamat", "Email", "No Telepon", "Aksi"];
 
 export function PassengerTable() {
-    const { passengers, loading, error, retry } = usePassengers();
+    const { passengers, loading, error, retry, deletePassenger } = usePassengers();
 
     if (loading) {
         return (
@@ -75,7 +75,12 @@ export function PassengerTable() {
                                 <ButtonAtom color="green" size="sm">
                                     <PencilIcon className="h-5 w-5" />
                                 </ButtonAtom>
-                                <ButtonAtom color="red" size="sm">
+                                <ButtonAtom color="red" size="sm" 
+                                        onClick={() => {
+                                            if (window.confirm("Yakin ingin menghapus penumpang ini?")) {
+                                            deletePassenger(psg.nik);
+                                            }
+                                        }}>
                                     <TrashIcon className="h-5 w-5" />
                                 </ButtonAtom>
                             </td>

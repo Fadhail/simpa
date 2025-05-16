@@ -10,7 +10,7 @@ import {
 const TABLE_HEAD = ["Kode Pesawat", "Nama Maskapai", "Tipe Pesawat", "Kapasitas", "Tahun Produksi", "Status", "Aksi"];
 
 export function PlaneTable() {
-    const { planes, loading, error, retry } = usePlanes();
+    const { planes, loading, error, retry, deletePlane } = usePlanes();
 
     if (loading) {
         return (
@@ -83,7 +83,12 @@ export function PlaneTable() {
                                 <ButtonAtom color="green" size="sm">
                                     <PencilIcon className="h-5 w-5" />
                                 </ButtonAtom>
-                                <ButtonAtom color="red" size="sm">
+                                <ButtonAtom color="red" size="sm" 
+                                        onClick={() => {
+                                            if (window.confirm("Yakin ingin menghapus pesawat ini?")) {
+                                            deletePlane(pln.kodePesawat);
+                                            }
+                                        }}>
                                     <TrashIcon className="h-5 w-5" />
                                 </ButtonAtom>
                             </td>

@@ -90,26 +90,26 @@ func UpdatePassenger(c *fiber.Ctx) error {
 	}
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-		"message":     "Data penumpang berhasil diupdate",
-		"NIK": updatedNIK,
-		"status":      fiber.StatusOK,
+		"message": "Data penumpang berhasil diupdate",
+		"NIK":     updatedNIK,
+		"status":  fiber.StatusOK,
 	})
 }
 
 // Menghapus Data Penumpang
 func DeletePassenger(c *fiber.Ctx) error {
-	NIK := c.Params("NIK")
+	nik := c.Params("nik")
 
-	deletedPassengerID, err := repository.DeletePassenger(c.Context(), NIK)
+	deletedPassengerID, err := repository.DeletePassenger(c.Context(), nik)
 	if err != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-			"error": fmt.Sprintf("Penumpang dengan ID %s tidak ditemukan: %v", NIK, err),
+			"error": fmt.Sprintf("Penumpang dengan ID %s tidak ditemukan: %v", nik, err),
 		})
 	}
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-		"message":     "Penumpang berhasil dihapus",
-		"NIK": deletedPassengerID,
-		"status":      fiber.StatusOK,
+		"message": "Penumpang berhasil dihapus",
+		"NIK":     deletedPassengerID,
+		"status":  fiber.StatusOK,
 	})
 }

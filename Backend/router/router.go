@@ -20,17 +20,17 @@ func SetupRoutes(app *fiber.App) {
 
 	// Routes untuk Penumpang
 	api.Get("/passengers", handler.GetAllPassenger)
-	api.Get("/passengers/:NIK", handler.GetPassengerByNIK)
+	api.Get("/passengers/:nik", handler.GetPassengerByNIK)
 	api.Post("/passengers", handler.InsertPassenger)
-	api.Put("/passengers/:NIK", handler.UpdatePassenger)
-	api.Delete("/passengers/delete/:NIK", handler.DeletePassenger)
+	api.Put("/passengers/:nik", handler.UpdatePassenger)
+	api.Delete("/passengers/delete/:nik", handler.DeletePassenger)
 
 	// Routes untuk Jadwal
 	api.Get("/schedules", handler.GetAllSchedules)
 	api.Get("/schedules/:id", handler.GetScheduleByKodePenerbangan)
 	api.Post("/schedules", handler.InsertSchedule)
 	api.Put("/schedules/:id", handler.UpdateSchedule)
-	api.Delete("/schedules/delete/:id", handler.DeleteSchedule)
+	api.Delete("/schedules/delete/:kodePenerbangan", handler.DeleteSchedule)
 
 	// Routes untuk Tiket
 	api.Get("/tickets", handler.GetAllTickets)

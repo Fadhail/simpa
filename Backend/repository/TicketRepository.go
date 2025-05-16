@@ -66,10 +66,10 @@ func GetAllTickets(ctx context.Context) ([]models.Ticket, error) {
 	return data, nil
 }
 
-func UpdateTicket(ctx context.Context, ticketID string, update models.Ticket) (updatedTicketID string, err error) {
+func UpdateTicket(ctx context.Context, kodeTiket string, update models.Ticket) (updatedTicketID string, err error) {
 	collection := config.MongoConnect(config.DBName).Collection(config.TicketCollection)
 
-	filter := bson.M{"TicketID": ticketID}
+	filter := bson.M{"TicketID": kodeTiket}
 	updateData := bson.M{"$set": update}
 
 	result, err := collection.UpdateOne(ctx, filter, updateData)
@@ -78,22 +78,22 @@ func UpdateTicket(ctx context.Context, ticketID string, update models.Ticket) (u
 		return "", err
 	}
 	if result.ModifiedCount == 0 {
-		return "", fmt.Errorf("tidak ada data yang diupdate untuk Ticket %v", ticketID)
+		return "", fmt.Errorf("tidak ada data yang diupdate untuk Ticket %v", kodeTiket)
 	}
-	return ticketID, nil
+	return kodeTiket, nil
 }
 
-func DeleteTicket(ctx context.Context, ticketID string) (deletedTicketID string, err error) {
+func DeleteTicket(ctx context.Context, kodeTiket string) (deletedTicketID string, err error) {
 	collection := config.MongoConnect(config.DBName).Collection(config.TicketCollection)
 
-	filter := bson.M{"TicketID": ticketID}
+	filter := bson.M{"kodeTiket": kodeTiket}
 	result, err := collection.DeleteOne(ctx, filter)
 	if err != nil {
 		fmt.Printf("Delete Ticket: %v\n", err)
 		return "", err
 	}
 	if result.DeletedCount == 0 {
-		return "", fmt.Errorf("tidak ada data yang dihapus untuk Ticket %v", ticketID)
+		return "", fmt.Errorf("tidak ada data yang dihapus untuk Ticket %v", kodeTiket)
 	}
-	return ticketID, nil
+	return kodeTiket, nil
 }

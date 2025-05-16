@@ -11,9 +11,9 @@ import (
 func TestInsertTicket(t *testing.T) {
 
 	ticket := models.Ticket{
-		KodeTiket:        "TCKT-20250512-002",
-		PassengerID:      "6821d189f3831fc3152c565f",
-		ScheduleID:       "6821d1a790e255d4c0b97445",
+		KodeTiket:        "TEST-11111-111",
+		PassengerID:      "6821d189f3831fc3152c565fAAA",
+		ScheduleID:       "6821d1a790e255d4c0b97445AAA",
 		NomorKursi:       "13A",
 		TanggalPembelian: time.Now(),
 		MasaAktif:        time.Now().AddDate(0, 0, 1),

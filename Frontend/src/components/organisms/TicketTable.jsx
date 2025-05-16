@@ -12,7 +12,7 @@ import {
 const TABLE_HEAD = ["Kode Tiket", "Pemilik Tiket", "Kode Penerbangan", "Nomor Kursi", "Tanggal Pembelian", "Masa Aktif", "Harga", "Status", "Aksi"];
 
 export function TicketTable() {
-    const { tickets, loading, error, retry } = useTicket();
+    const { tickets, loading, error, retry, deleteTicket} = useTicket();
     const { passengers } = usePassengers();
     const { schedules } = useSchedules();
 
@@ -95,7 +95,12 @@ export function TicketTable() {
                                 <ButtonAtom color="green" size="sm">
                                     <PencilIcon className="h-5 w-5" />
                                 </ButtonAtom>
-                                <ButtonAtom color="red" size="sm">
+                                <ButtonAtom color="red" size="sm" 
+                                        onClick={() => {
+                                            if (window.confirm("Yakin ingin menghapus Tiket ini?")) {
+                                            deleteTicket(tkt.kodeTiket);
+                                            }
+                                        }}>
                                     <TrashIcon className="h-5 w-5" />
                                 </ButtonAtom>
                             </td>
