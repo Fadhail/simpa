@@ -1,9 +1,10 @@
 import { Card } from "@material-tailwind/react";
 import { ButtonAtom } from "../atoms/ButtonAtom";
 import { TypographyAtom } from "../atoms/TypographyAtom";
-import { useTicket } from "../../hooks/useTicket";
+import { useTickets } from "../../hooks/useTickets";
 import { usePassengers } from "../../hooks/usePassengers";
 import { useSchedules } from "../../hooks/useSchedules";
+import { Link } from "react-router-dom";
 import {
     PencilIcon,
     TrashIcon
@@ -12,7 +13,7 @@ import {
 const TABLE_HEAD = ["Kode Tiket", "Pemilik Tiket", "Kode Penerbangan", "Nomor Kursi", "Tanggal Pembelian", "Masa Aktif", "Harga", "Status", "Aksi"];
 
 export function TicketTable() {
-    const { tickets, loading, error, retry, deleteTicket} = useTicket();
+    const { tickets, loading, error, retry, deleteTicket} = useTickets();
     const { passengers } = usePassengers();
     const { schedules } = useSchedules();
 
@@ -42,9 +43,11 @@ export function TicketTable() {
     return (
         <Card className="h-full w-full overflow-auto p-6">
             <div className="flex justify-end p-4">
-                <ButtonAtom color="blue">
-                    Tambah Data
-                </ButtonAtom>
+                <Link to="/tickets/add">
+                    <ButtonAtom color="blue" size="sm">
+                        Tambah Tiket
+                    </ButtonAtom>
+                </Link> 
             </div>
 
             <table className="w-full table-auto text-left">
@@ -97,17 +100,10 @@ export function TicketTable() {
                                 </div>
                             </td>
                             <td className="p-4">
-                                <ButtonAtom color="green" size="sm">
+                                <Link to={`/tickets/edit/${tkt.kodeTiket}`} className="text-blue-500 hover:text-blue-700 mr-2">
                                     <PencilIcon className="h-5 w-5" />
-                                </ButtonAtom>
-                                <ButtonAtom color="red" size="sm" 
-                                        onClick={() => {
-                                            if (window.confirm("Yakin ingin menghapus Tiket ini?")) {
-                                            deleteTicket(tkt.kodeTiket);
-                                            }
-                                        }}>
-                                    <TrashIcon className="h-5 w-5" />
-                                </ButtonAtom>
+                                </Link> 
+                                <TrashIcon onClick={() => {if (window.confirm("Yakin ingin menghapus tiket ini?")) deleteTicket(tkt.kodeTiket)}} className="h-5 w-5" /> 
                             </td>
                         </tr>
                     ))}

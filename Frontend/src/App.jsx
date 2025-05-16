@@ -11,6 +11,8 @@ import { AddPassenger } from "./pages/AddPassenger";
 import { EditPassenger } from "./pages/EditPassenger";
 import { AddSchedule } from "./pages/AddSchedule";
 import { EditSchedule } from "./pages/EditSchedule";
+import { AddTicket } from "./pages/AddTicket";
+import { EditTicket } from "./pages/EditTicket";
 
 export default function App() {
   return (
@@ -28,6 +30,8 @@ export default function App() {
           <Route path="/passengers/edit/:nik" element={<EditPassenger />} />
           <Route path="/schedules/add" element={<AddSchedule />} />
           <Route path="/schedules/edit/:kodePenerbangan" element={<EditSchedule />} />
+          <Route path="/tickets/add" element={<AddTicket />} />
+          <Route path="/tickets/edit/:kodeTiket" element={<EditTicket />} />
         </Routes>
       </LayoutDashboard>
     </Router>

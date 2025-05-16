@@ -10,22 +10,22 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func InsertTicket(ctx context.Context, ticket models.Ticket) (insertedID interface{}, err error) {
+func InsertTicket(ctx context.Context, tkt models.Ticket) (insertedID interface{}, err error) {
 	collection := config.MongoConnect(config.DBName).Collection(config.TicketCollection)
 
 	// Cek apakah Ticket sudah ada
-	filter := bson.M{"TicketID": ticket.KodeTiket}
+	filter := bson.M{"kodeTiket": tkt.KodeTiket}
 	count, err := collection.CountDocuments(ctx, filter)
 	if err != nil {
 		fmt.Printf("Insert Ticket - Count: %v\n", err)
 		return nil, err
 	}
 	if count > 0 {
-		return nil, fmt.Errorf("ticket %v sudah terdaftar", ticket.KodeTiket)
+		return nil, fmt.Errorf("tiket %v sudah terdaftar", tkt.KodeTiket)
 	}
 
 	// Insert jika TicketID belum ada
-	insertResult, err := collection.InsertOne(ctx, ticket)
+	insertResult, err := collection.InsertOne(ctx, tkt)
 	if err != nil {
 		fmt.Printf("Insert Ticket - Insert: %v\n", err)
 		return nil, err
@@ -34,9 +34,9 @@ func InsertTicket(ctx context.Context, ticket models.Ticket) (insertedID interfa
 	return insertResult.InsertedID, nil
 }
 
-func GetTicketByID(ctx context.Context, ticketID string) (ticket *models.Ticket, err error) {
+func GetTicketByID(ctx context.Context, kodeTiket string) (ticket *models.Ticket, err error) {
 	collection := config.MongoConnect(config.DBName).Collection(config.TicketCollection)
-	filter := bson.M{"TicketID": ticketID}
+	filter := bson.M{"kodeTiket": kodeTiket}
 	err = collection.FindOne(ctx, filter).Decode(&ticket)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
@@ -69,7 +69,7 @@ func GetAllTickets(ctx context.Context) ([]models.Ticket, error) {
 func UpdateTicket(ctx context.Context, kodeTiket string, update models.Ticket) (updatedTicketID string, err error) {
 	collection := config.MongoConnect(config.DBName).Collection(config.TicketCollection)
 
-	filter := bson.M{"TicketID": kodeTiket}
+	filter := bson.M{"kodeTiket": kodeTiket}
 	updateData := bson.M{"$set": update}
 
 	result, err := collection.UpdateOne(ctx, filter, updateData)

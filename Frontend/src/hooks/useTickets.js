@@ -1,19 +1,19 @@
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 
-export const useTicket = () => {
+export const useTickets = () => {
     const [tickets, setTickets] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const fetchedRef = useRef(false);
 
-    const API_BASE_URL = "http://localhost:3000/api/tickets";
+    const API_BASE_URL = "http://localhost:3000/api";
 
     const fetchData = async () => {
         setLoading(true);
         setError(null);
         try {
-            const response = await axios.get(API_BASE_URL);
+            const response = await axios.get(`${API_BASE_URL}/tickets`);
             setTickets(response.data.data || []);
         } catch (err) {
             console.error("Error fetching tickets:", err);
@@ -38,8 +38,8 @@ export const useTicket = () => {
     //POST: Add a new ticket
     const addTicket = async (ticket) => {
         try {
-            const response = await axios.post(API_BASE_URL, ticket);
-            setTickets((prev) => [...prev, { ...ticket, _id: response.data.kodeTiket }]);
+            const response = await axios.post(`${API_BASE_URL}/tickets/add`, ticket);
+            setTickets((prev) => [...prev, { ...ticket, kodeTiket: response.data.kodeTiket }]);
             return { success: true };
         } catch (err) {
             console.error("Error adding ticket:", err);
@@ -47,10 +47,11 @@ export const useTicket = () => {
         }
     };
 
+
     //PUT: Update a ticket
     const updateTicket = async (kodeTiket, updatedData) => {
         try {
-            await axios.put(`${API_BASE_URL}/${kodeTiket}`, updatedData);
+            await axios.put(`${API_BASE_URL}/tickets/${kodeTiket}`, updatedData);
             setTickets((prev) =>
                 prev.map((ticket) =>
                     ticket.kodeTiket === kodeTiket ? { ...ticket, ...updatedData } : ticket
@@ -66,7 +67,7 @@ export const useTicket = () => {
     //DELETE: Delete a ticket
     const deleteTicket = async (kodeTiket) => {
         try {
-            await axios.delete(`${API_BASE_URL}/delete/${kodeTiket}`);
+            await axios.delete(`${API_BASE_URL}/tickets/delete/${kodeTiket}`);
             setTickets((prev) => prev.filter((ticket) => ticket.kodeTiket !== kodeTiket));
             return { success: true };
         } catch (err) {

@@ -1,10 +1,10 @@
 import { formatCurrency } from "../../utils/formatUtils";
-import { useTicket } from "../../hooks/useTicket";
+import { useTickets } from "../../hooks/useTickets";
 import { usePassengers } from "../../hooks/usePassengers";
 import { useSchedules } from "../../hooks/useSchedules";
 
 export function TicketList() {
-    const { tickets, loading, error, retry } = useTicket();
+    const { tickets, loading, error, retry } = useTickets();
     const { passengers } = usePassengers();
     const { schedules } = useSchedules();
     

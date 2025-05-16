@@ -5,13 +5,13 @@ import { Card } from "@material-tailwind/react";
 import { usePassengers } from "../hooks/usePassengers";
 import { usePlanes } from "../hooks/usePlanes";
 import { useSchedules } from "../hooks/useSchedules";
-import { useTicket } from "../hooks/useTicket";
+import { useTickets } from "../hooks/useTickets";
 
 export function Dashboard() {
     const { passengers } = usePassengers();
     const { planes } = usePlanes();
     const { schedules } = useSchedules();
-    const { tickets } = useTicket();
+    const { tickets } = useTickets();
     const stats = {
         totalPassengers: passengers.length,
         totalPlanes: planes.length,

@@ -11,15 +11,25 @@ export function TicketForm({
     passengers = [],
     schedules = [],
 }) {
-    const [formData, setFormData] = useState({
-        kodeTiket: initialValues.kodeTiket || '',
-        passengerId: initialValues.passengerId || '',
-        scheduleId: initialValues.scheduleId || '',
-        nomorKursi: initialValues.nomorKursi || '',
-        tanggalPembelian: initialValues.tanggalPembelian || null,
-        masaAktif: initialValues.masaAktif || null,
-        harga: initialValues.harga || '',
-        status: initialValues.status || 'Aktif',
+    const [formData, setFormData] = useState(() => {
+        const initialTanggalPembelian = initialValues.tanggalPembelian ? new Date(initialValues.tanggalPembelian) : new Date();
+        const initialMasaAktif = initialValues.masaAktif ? new Date(initialValues.masaAktif) : new Date(initialTanggalPembelian.getTime() + 90 * 24 * 60 * 60 * 1000); // 90 days from purchase date
+        return {
+            kodeTiket: initialValues.kodeTiket || '',
+            penumpang: {
+                id: initialValues.penumpang?.id || '',
+                nama: initialValues.penumpang?.nama || ''
+            },
+            jadwal: {
+                id: initialValues.jadwal?.id || '',
+                kodePenerbangan: initialValues.jadwal?.kodePenerbangan || ''
+            },
+            nomorKursi: initialValues.nomorKursi || '',
+            tanggalPembelian: initialTanggalPembelian,
+            masaAktif: initialMasaAktif,
+            harga: initialValues.harga ? parseFloat(initialValues.harga) : 0,
+            status: initialValues.status || 'Aktif'
+        };
     });
 
     const [errors, setErrors] = useState({});
@@ -28,12 +38,13 @@ export function TicketForm({
         const newErrors = {};
         
         if (!formData.kodeTiket) newErrors.kodeTiket = 'Kode tiket wajib diisi';
-        if (!formData.passengerId) newErrors.passengerId = 'Penumpang wajib dipilih';
-        if (!formData.scheduleId) newErrors.scheduleId = 'Jadwal wajib dipilih';
+        if (!formData.penumpang.id) newErrors.penumpang = 'Penumpang wajib dipilih';
+        if (!formData.jadwal.id) newErrors.jadwal = 'Jadwal wajib dipilih';
         if (!formData.nomorKursi) newErrors.nomorKursi = 'Nomor kursi wajib diisi';
         if (!formData.tanggalPembelian) newErrors.tanggalPembelian = 'Tanggal pembelian wajib diisi';
         if (!formData.masaAktif) newErrors.masaAktif = 'Masa aktif wajib diisi';
-        if (!formData.harga) newErrors.harga = 'Harga wajib diisi';
+        if (formData.harga <= 0) newErrors.harga = 'Harga harus lebih dari 0';
+        if (!formData.status) newErrors.status = 'Status wajib diisi';
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -42,7 +53,18 @@ export function TicketForm({
     const handleSubmit = (e) => {
         e.preventDefault();
         if (validate()) {
-            onSubmit(formData);
+            // Format data before submission
+            const formattedData = {
+                kodeTiket: formData.kodeTiket,
+                passengerId: formData.penumpang.id,
+                scheduleId: formData.jadwal.id,
+                nomorKursi: formData.nomorKursi,
+                tanggalPembelian: formData.tanggalPembelian.toISOString(),
+                masaAktif: formData.masaAktif.toISOString(),
+                harga: formData.harga,
+                status: formData.status
+            };
+            onSubmit(formattedData);
         }
     };
 
@@ -73,28 +95,62 @@ export function TicketForm({
 
             <SelectAtom
                 label="Penumpang"
-                name="passengerId"
-                value={formData.passengerId}
-                onChange={handleInputChange}
-                options={passengers.map(passenger => ({
-                    value: passenger.id,
-                    label: `${passenger.nik} - ${passenger.namaLengkap}`
-                }))}
-                error={!!errors.passengerId}
-                helperText={errors.passengerId}
+                name="penumpang.id"
+                value={formData.penumpang.id}
+                onChange={(e) => {
+                    const passengerId = e.target.value;
+                    const selectedPassenger = passengers.find(p => p.id === passengerId);
+                    setFormData(prev => ({
+                        ...prev,
+                        penumpang: {
+                            id: passengerId,
+                            nama: selectedPassenger ? `${selectedPassenger.namaLengkap.namaDepan} ${selectedPassenger.namaLengkap.namaBelakang}` : ''
+                        }
+                    }));
+                }}
+                options={passengers
+                    .filter((_, i) => i < 10)
+                    .map(passenger => ({
+                        value: passenger.id,
+                        label: `${passenger.nik} - ${passenger.namaLengkap.namaDepan} ${passenger.namaLengkap.namaBelakang}`
+                    }))}
+                error={!!errors.penumpang}
+                helperText={errors.penumpang}
+                searchBy="nik"
+                search={(e) => {
+                    const searchValue = e.target.value;
+                    const filteredPassengers = passengers.filter(passenger => passenger.nik.includes(searchValue));
+                    const filteredOptions = filteredPassengers
+                        .map(passenger => ({
+                            value: passenger.id,
+                            label: `${passenger.nik} - ${passenger.namaLengkap.namaDepan} ${passenger.namaLengkap.namaBelakang}`
+                        }))
+                        .sort((a, b) => a.label.localeCompare(b.label));
+                    setOptions(filteredOptions);
+                }}
             />
 
             <SelectAtom
                 label="Jadwal Penerbangan"
-                name="scheduleId"
-                value={formData.scheduleId}
-                onChange={handleInputChange}
+                name="jadwal.id"
+                value={formData.jadwal.id}
+                onChange={(e) => {
+                    const scheduleId = e.target.value;
+                    const selectedSchedule = schedules.find(s => s.id === scheduleId);
+                    setFormData(prev => ({
+                        ...prev,
+                        jadwal: {
+                            id: scheduleId,
+                            kodePenerbangan: selectedSchedule ? selectedSchedule.kodePenerbangan : ''
+                        }
+                    }));
+                }}
                 options={schedules.map(schedule => ({
                     value: schedule.id,
-                    label: `${schedule.kodePenerbangan} (${schedule.asal} → ${schedule.tujuan})`
+                    label: `${schedule.kodePenerbangan} - ${schedule.asal} ke ${schedule.tujuan}`
                 }))}
-                error={!!errors.scheduleId}
-                helperText={errors.scheduleId}
+                error={!!errors.jadwal}
+                helperText={errors.jadwal}
             />
 
             <TextFieldAtom
@@ -110,7 +166,10 @@ export function TicketForm({
                 label="Tanggal Pembelian"
                 name="tanggalPembelian"
                 value={formData.tanggalPembelian}
-                onChange={(newValue) => setFormData(prev => ({ ...prev, tanggalPembelian: newValue }))}
+                onChange={(newValue) => setFormData(prev => ({ 
+                    ...prev, 
+                    tanggalPembelian: newValue
+                }))}
                 error={!!errors.tanggalPembelian}
                 helperText={errors.tanggalPembelian}
             />
@@ -119,7 +178,10 @@ export function TicketForm({
                 label="Masa Aktif"
                 name="masaAktif"
                 value={formData.masaAktif}
-                onChange={(newValue) => setFormData(prev => ({ ...prev, masaAktif: newValue }))}
+                onChange={(newValue) => setFormData(prev => ({ 
+                    ...prev, 
+                    masaAktif: newValue
+                }))}
                 error={!!errors.masaAktif}
                 helperText={errors.masaAktif}
             />
@@ -128,7 +190,11 @@ export function TicketForm({
                 label="Harga"
                 name="harga"
                 value={formData.harga}
-                onChange={handleInputChange}
+                onChange={(e) => {
+                    const value = e.target.value;
+                    const numericValue = value ? parseFloat(value) : '';
+                    setFormData(prev => ({ ...prev, harga: numericValue }));
+                }}
                 error={!!errors.harga}
                 helperText={errors.harga}
                 type="number"
