@@ -10,25 +10,24 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@heroicons/react": "^2.2.0",
-    "@material-tailwind/html": "^3.0.0-beta.7",
+    "@heroicons/react": "^2.1.1",
+    "@material-tailwind/html": "^2.1.0",
     "@material-tailwind/react": "^2.1.10",
-    "axios": "^1.9.0",
-    "pnpm": "^10.10.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-router-dom": "^7.5.2"
+    "axios": "^1.6.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.21.3"
   },
   "devDependencies": {
-    "@eslint/js": "^9.21.0",
-    "@types/react": "^19.0.10",
-    "@types/react-dom": "^19.0.4",
-    "@vitejs/plugin-react": "^4.3.4",
-    "eslint": "^9.21.0",
-    "eslint-plugin-react-hooks": "^5.1.0",
-    "eslint-plugin-react-refresh": "^0.4.19",
+    "@eslint/js": "^9.10.1",
+    "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
+    "@vitejs/plugin-react": "^4.2.1",
+    "eslint": "^8.56.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
     "globals": "^15.15.0",
-    "tailwindcss": "^3.4.17",
-    "vite": "^6.2.0"
+    "tailwindcss": "^3.4.1",
+    "vite": "^5.0.12"
   }
 }
