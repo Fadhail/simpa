@@ -7,14 +7,14 @@ export const usePlanes = () => {
   const [error, setError] = useState(null);
   const fetchedRef = useRef(false);
 
-  const API_BASE_URL = "http://localhost:3000/api/planes";
+  const API_BASE_URL = "http://localhost:3000/api";
 
   // GET: Fetch all planes
   const fetchData = async () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.get(API_BASE_URL);
+      const response = await axios.get(`${API_BASE_URL}/planes`);
       setPlanes(response.data.data || []);
     } catch (err) {
       console.error("Error fetching planes:", err);
@@ -39,19 +39,19 @@ export const usePlanes = () => {
   // POST: Add a new plane
   const addPlane = async (plane) => {
     try {
-      const response = await axios.post(API_BASE_URL, plane);
-      setPlanes((prev) => [...prev, { ...plane, _id: response.data.id }]);
+      const response = await axios.post(`${API_BASE_URL}/planes/add`, plane);
+      setPlanes((prev) => [...prev, { ...plane, kodePesawat: response.data.kodePesawat }]);
       return { success: true };
     } catch (err) {
       console.error("Error adding plane:", err);
-      return { success: false, error: err };
+      throw err;
     }
   };
 
   // PUT: Update a plane
   const updatePlane = async (kodePesawat, updatedData) => {
     try {
-      await axios.put(`${API_BASE_URL}/${kodePesawat}`, updatedData);
+      await axios.put(`${API_BASE_URL}/planes/${kodePesawat}`, updatedData);
       setPlanes((prev) =>
         prev.map((plane) =>
           plane.kodePesawat === kodePesawat ? { ...plane, ...updatedData } : plane
@@ -60,14 +60,14 @@ export const usePlanes = () => {
       return { success: true };
     } catch (err) {
       console.error("Error updating plane:", err);
-      return { success: false, error: err };
+      throw err;
     }
   };
 
   // DELETE: Remove a plane
   const deletePlane = async (kodePesawat) => {
     try {
-      await axios.delete(`${API_BASE_URL}/delete/${kodePesawat}`);
+      await axios.delete(`${API_BASE_URL}/planes/delete/${kodePesawat}`);
       setPlanes((prev) =>
         prev.filter((plane) => plane.kodePesawat !== kodePesawat)
       );
@@ -83,6 +83,7 @@ export const usePlanes = () => {
     loading,
     error,
     retry,
+    fetchData,
     addPlane,
     updatePlane,
     deletePlane,

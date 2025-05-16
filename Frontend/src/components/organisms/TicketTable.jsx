@@ -89,7 +89,7 @@ export function TicketTable() {
                                             : "bg-white-500 opacity-80"
                                     }`}>
                                     {tkt.status}
-                                </div>``
+                                </div>
                             </td>
                             <td className="p-4">
                                 <ButtonAtom color="green" size="sm">

@@ -2,6 +2,7 @@ import { Card } from "@material-tailwind/react";
 import { ButtonAtom } from "../atoms/ButtonAtom";
 import { TypographyAtom } from "../atoms/TypographyAtom";
 import { usePlanes } from "../../hooks/usePlanes";
+import { Link } from "react-router-dom";
 import {
     PencilIcon,
     TrashIcon
@@ -38,9 +39,11 @@ export function PlaneTable() {
     return (
         <Card className="h-full w-full overflow-auto p-6">
             <div className="flex justify-end p-4">
-                <ButtonAtom color="blue">
-                    Tambah Data
-                </ButtonAtom>
+                <Link to="/planes/add">
+                    <ButtonAtom color="blue" size="sm">
+                        Tambah Pesawat
+                    </ButtonAtom>
+                </Link>
             </div>
 
             <table className="w-full table-auto text-left">
@@ -80,17 +83,10 @@ export function PlaneTable() {
                                 </div>
                             </td>
                             <td className="p-4">
-                                <ButtonAtom color="green" size="sm">
+                                <Link to={`/planes/edit/${pln.kodePesawat}`} className="text-blue-500 hover:text-blue-700 mr-2">
                                     <PencilIcon className="h-5 w-5" />
-                                </ButtonAtom>
-                                <ButtonAtom color="red" size="sm" 
-                                        onClick={() => {
-                                            if (window.confirm("Yakin ingin menghapus pesawat ini?")) {
-                                            deletePlane(pln.kodePesawat);
-                                            }
-                                        }}>
-                                    <TrashIcon className="h-5 w-5" />
-                                </ButtonAtom>
+                                </Link>
+                                <TrashIcon onClick={() => {if (window.confirm("Yakin ingin menghapus pesawat ini?")) {deletePlane(pln.kodePesawat);}}} className="h-5 w-5" />
                             </td>
                         </tr>
                     ))}

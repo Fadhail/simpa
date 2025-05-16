@@ -31,7 +31,7 @@ func InsertPlane(ctx context.Context, pln models.Plane) (insertedID interface{},
 		return nil, err
 	}
 
-	fmt.Printf("InsertPlane - InsertedID: %v\n", insertResult)
+	fmt.Printf("InsertPlane - InsertedID: %v\n", insertResult.InsertedID)
 
 	return insertResult.InsertedID, nil
 }

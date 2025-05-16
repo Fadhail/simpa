@@ -14,7 +14,7 @@ func SetupRoutes(app *fiber.App) {
 	// Routes untuk Pesawat
 	api.Get("/planes", handler.GetAllPlanes)
 	api.Get("/planes/:kodePesawat", handler.GetPlaneByCode)
-	api.Post("/planes", handler.InsertPlane)
+	api.Post("/planes/add", handler.InsertPlane)
 	api.Put("/planes/:kodePesawat", handler.UpdatePlane)
 	api.Delete("/planes/delete/:kodePesawat", handler.DeletePlane)
 
