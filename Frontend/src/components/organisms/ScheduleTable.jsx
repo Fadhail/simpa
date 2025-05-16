@@ -3,6 +3,7 @@ import { ButtonAtom } from "../atoms/ButtonAtom";
 import { TypographyAtom } from "../atoms/TypographyAtom";
 import { useSchedules } from "../../hooks/useSchedules";
 import { usePlanes } from "../../hooks/usePlanes";
+import { Link } from "react-router-dom";
 import {
     PencilIcon,
     TrashIcon
@@ -40,9 +41,11 @@ export function ScheduleTable() {
     return (
         <Card className="h-full w-full overflow-auto p-6">
             <div className="flex justify-end p-4">
-                <ButtonAtom color="blue">
-                    Tambah Data
-                </ButtonAtom>
+                <Link to="/schedules/add">
+                    <ButtonAtom color="blue" size="sm">
+                        Tambah Jadwal Penerbangan
+                    </ButtonAtom>
+                </Link>
             </div>
 
             <table className="w-full table-auto text-left">
@@ -89,17 +92,10 @@ export function ScheduleTable() {
                             </td>
                             <td className="p-4">Rp{sdl.hargaTiket}</td>
                             <td className="p-4">
-                                <ButtonAtom color="green" size="sm">
+                            <Link to={`/schedules/edit/${sdl.kodePenerbangan}`} className="text-blue-500 hover:text-blue-700 mr-2">
                                     <PencilIcon className="h-5 w-5" />
-                                </ButtonAtom>
-                                <ButtonAtom color="red" size="sm" 
-                                        onClick={() => {
-                                            if (window.confirm("Yakin ingin menghapus jadwal ini?")) {
-                                            deleteSchedule(sdl.kodePenerbangan);
-                                            }
-                                        }}>
-                                    <TrashIcon className="h-5 w-5" />
-                                </ButtonAtom>
+                            </Link> 
+                            <TrashIcon onClick={() => {if (window.confirm("Yakin ingin menghapus jadwal ini?")) deleteSchedule(sdl.kodePenerbangan)}} className="h-5 w-5" />
                             </td>
                         </tr>
                     ))}

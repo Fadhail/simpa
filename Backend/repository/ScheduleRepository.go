@@ -69,7 +69,7 @@ func GetAllSchedules(ctx context.Context) ([]models.Schedule, error) {
 func UpdateSchedule(ctx context.Context, kodePenerbangan string, update models.Schedule) (updatedKodePenerbangan string, err error) {
 	collection := config.MongoConnect(config.DBName).Collection(config.ScheduleCollection)
 
-	filter := bson.M{"KodePenerbangan": kodePenerbangan}
+	filter := bson.M{"kodePenerbangan": kodePenerbangan}
 	updateData := bson.M{"$set": update}
 
 	result, err := collection.UpdateOne(ctx, filter, updateData)

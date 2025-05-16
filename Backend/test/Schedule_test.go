@@ -11,7 +11,7 @@ import (
 func TestInsertSchedule(t *testing.T) {
 
 	schedule := models.Schedule{
-		KodePenerbangan: "TEST1234",
+		KodePenerbangan: "TESwww34",
 		PlaneID:         "6821d18ad6c1696a89e5f42911b8f3a0",
 		Asal:            "Jakarta",
 		Tujuan:          "Surabaya",

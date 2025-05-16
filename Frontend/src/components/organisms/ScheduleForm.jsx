@@ -15,10 +15,10 @@ export function ScheduleForm({
         planeId: initialValues.planeId || '',
         asal: initialValues.asal || '',
         tujuan: initialValues.tujuan || '',
-        waktuBerangkat: initialValues.waktuBerangkat || null,
-        waktuTiba: initialValues.waktuTiba || null,
+        waktuBerangkat: initialValues.waktuBerangkat ? new Date(initialValues.waktuBerangkat) : null,
+        waktuTiba: initialValues.waktuTiba ? new Date(initialValues.waktuTiba) : null,
         status: initialValues.status || 'Terjadwal',
-        hargaTiket: initialValues.hargaTiket || '',
+        hargaTiket: initialValues.hargaTiket ? parseFloat(initialValues.hargaTiket) : '',
     });
 
     const [errors, setErrors] = useState({});
@@ -32,7 +32,7 @@ export function ScheduleForm({
         if (!formData.tujuan) newErrors.tujuan = 'Tujuan wajib diisi';
         if (!formData.waktuBerangkat) newErrors.waktuBerangkat = 'Waktu berangkat wajib diisi';
         if (!formData.waktuTiba) newErrors.waktuTiba = 'Waktu tiba wajib diisi';
-        if (!formData.hargaTiket) newErrors.hargaTiket = 'Harga tiket wajib diisi';
+        if (!formData.hargaTiket || isNaN(formData.hargaTiket)) newErrors.hargaTiket = 'Harga tiket wajib diisi dengan angka';
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -105,8 +105,8 @@ export function ScheduleForm({
             <DateTimePickerAtom
                 label="Waktu Berangkat"
                 name="waktuBerangkat"
-                value={formData.waktuBerangkat}
-                onChange={(newValue) => setFormData(prev => ({ ...prev, waktuBerangkat: newValue }))}
+                value={formData.waktuBerangkat ? new Date(formData.waktuBerangkat) : null}
+                onChange={(newValue) => setFormData(prev => ({ ...prev, waktuBerangkat: newValue.toISOString() }))}
                 error={!!errors.waktuBerangkat}
                 helperText={errors.waktuBerangkat}
             />
@@ -114,8 +114,8 @@ export function ScheduleForm({
             <DateTimePickerAtom
                 label="Waktu Tiba"
                 name="waktuTiba"
-                value={formData.waktuTiba}
-                onChange={(newValue) => setFormData(prev => ({ ...prev, waktuTiba: newValue }))}
+                value={formData.waktuTiba ? new Date(formData.waktuTiba) : null}
+                onChange={(newValue) => setFormData(prev => ({ ...prev, waktuTiba: newValue.toISOString() }))}
                 error={!!errors.waktuTiba}
                 helperText={errors.waktuTiba}
             />
@@ -132,7 +132,11 @@ export function ScheduleForm({
                 label="Harga Tiket"
                 name="hargaTiket"
                 value={formData.hargaTiket}
-                onChange={handleInputChange}
+                onChange={(e) => {
+                    const value = e.target.value;
+                    const numericValue = value ? parseFloat(value) : '';
+                    setFormData(prev => ({ ...prev, hargaTiket: numericValue }));
+                }}
                 error={!!errors.hargaTiket}
                 helperText={errors.hargaTiket}
                 type="number"

@@ -11,7 +11,7 @@ import (
 func TestInsertTicket(t *testing.T) {
 
 	ticket := models.Ticket{
-		KodeTiket:        "TEST-11111-111",
+		KodeTiket:        "TEST-1141-111",
 		PassengerID:      "6821d189f3831fc3152c565fAAA",
 		ScheduleID:       "6821d1a790e255d4c0b97445AAA",
 		NomorKursi:       "13A",

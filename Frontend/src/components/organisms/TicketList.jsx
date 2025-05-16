@@ -50,7 +50,7 @@ export function TicketList() {
                         {tickets.slice(tickets.length - 5).map((tkt) => (
                             <tr key={tkt.id} className="border-b">
                                 <td className="py-3">{tkt.kodeTiket}</td>
-                                <td className="py-3">{passengers?.find((psg) => psg.id === tkt.passengerId)?.namaLengkap || "Unknown"}</td>
+                                <td className="py-3">{passengers?.find((psg) => psg.id === tkt.passengerId)?.namaLengkap.namaDepan || "Unknown"}</td>
                                 <td className="py-3">{formatCurrency(tkt.harga)}</td>
                                 <td className="py-3">{schedules?.find((sdl) => sdl.id === tkt.scheduleId)?.kodePenerbangan || "Unknown"}</td>
                             </tr>

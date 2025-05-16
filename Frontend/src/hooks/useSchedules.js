@@ -7,13 +7,14 @@ export const useSchedules = () => {
     const [error, setError] = useState(null);
     const fetchedRef = useRef(false); 
 
-    const API_BASE_URL = "http://localhost:3000/api/schedules";
+    const API_BASE_URL = "http://localhost:3000/api";
 
     const fetchData = async () => {
         setLoading(true);
         setError(null);
         try {
-            const response = await axios.get(API_BASE_URL);
+            const response = await axios.get(`${API_BASE_URL}/schedules`);
+            // The backend returns data in the format { status, message, data }
             setSchedules(response.data.data || []);
         } catch (err) {
             console.error("Error fetching schedules:", err);
@@ -38,8 +39,8 @@ export const useSchedules = () => {
     //POST: Add a new schedule
     const addSchedule = async (schedule) => {
         try {
-            const response = await axios.post(API_BASE_URL, schedule);
-            setSchedules((prev) => [...prev, { ...schedule, _id: response.data._id }]);
+            const response = await axios.post(`${API_BASE_URL}/schedules/add`, schedule);
+            setSchedules((prev) => [...prev, { ...schedule, kodePenerbangan: response.data.kodePenerbangan }]);
             return { success: true };
         } catch (err) {
             console.error("Error adding schedule:", err);
@@ -50,10 +51,11 @@ export const useSchedules = () => {
     //PUT: Update a schedule
     const updateSchedule = async (kodePenerbangan, updatedData) => {
         try {
-            await axios.put(`${API_BASE_URL}/${kodePenerbangan}`, updatedData);
+            // The backend expects the ID parameter to be named 'id' in the path
+            await axios.put(`${API_BASE_URL}/schedules/${kodePenerbangan}`, updatedData);
             setSchedules((prev) =>
                 prev.map((schedule) =>
-                    schedule._id === kodePenerbangan ? { ...schedule, ...updatedData } : schedule
+                    schedule.kodePenerbangan === kodePenerbangan ? { ...schedule, ...updatedData } : schedule
                 )
             );
             return { success: true };
@@ -66,7 +68,7 @@ export const useSchedules = () => {
     //DELETE: Remove a schedule
     const deleteSchedule = async (kodePenerbangan) => {
         try {
-            await axios.delete(`${API_BASE_URL}/delete/${kodePenerbangan}`);
+            await axios.delete(`${API_BASE_URL}/schedules/delete/${kodePenerbangan}`);
             setSchedules((prev) => prev.filter((schedule) => schedule.kodePenerbangan !== kodePenerbangan));
             return { success: true };
         } catch (err) {
