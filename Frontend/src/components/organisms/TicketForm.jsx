@@ -2,6 +2,8 @@ import { TextFieldAtom } from "../atoms/TextFieldAtom";
 import { SelectAtom } from "../atoms/SelectAtom";
 import { DateTimePickerAtom } from "../atoms/DateTimePickerAtom";
 import { useState } from "react";
+import { useSchedules } from "../../hooks/useSchedules";
+import { useEffect } from "react";
 
 export function TicketForm({
     initialValues = {},
@@ -36,7 +38,7 @@ export function TicketForm({
 
     const validate = () => {
         const newErrors = {};
-        
+
         if (!formData.kodeTiket) newErrors.kodeTiket = 'Kode tiket wajib diisi';
         if (!formData.penumpang.id) newErrors.penumpang = 'Penumpang wajib dipilih';
         if (!formData.jadwal.id) newErrors.jadwal = 'Jadwal wajib dipilih';
@@ -82,6 +84,28 @@ export function TicketForm({
         { value: 'Digunakan', label: 'Digunakan' },
     ];
 
+    useEffect(() => {
+        if (!isEditing && !formData.kodeTiket) {
+            const now = new Date();
+            const pad = (n) => n.toString().padStart(2, '0');
+            const dateStr = [
+                now.getFullYear(),
+                pad(now.getMonth() + 1),
+                pad(now.getDate()),
+                pad(now.getHours()),
+                pad(now.getMinutes()),
+                pad(now.getSeconds())
+            ].join('');
+            const random = Math.floor(1000 + Math.random() * 9000);
+            const kodeTiket = `TKT-${dateStr}-${random}`;
+            setFormData(prev => ({
+                ...prev,
+                kodeTiket
+            }));
+        }
+        // eslint-disable-next-line
+    }, [isEditing]);
+
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
             <TextFieldAtom
@@ -91,6 +115,7 @@ export function TicketForm({
                 onChange={handleInputChange}
                 error={!!errors.kodeTiket}
                 helperText={errors.kodeTiket}
+                disabled
             />
 
             <SelectAtom
@@ -128,7 +153,8 @@ export function TicketForm({
                         jadwal: {
                             id: scheduleId,
                             kodePenerbangan: selectedSchedule ? selectedSchedule.kodePenerbangan : ''
-                        }
+                        },
+                        harga: selectedSchedule ? selectedSchedule.hargaTiket : 0 // update harga sesuai hargaTiket
                     }));
                 }}
                 options={schedules.map(schedule => ({
@@ -152,8 +178,8 @@ export function TicketForm({
                 label="Tanggal Pembelian"
                 name="tanggalPembelian"
                 value={formData.tanggalPembelian}
-                onChange={(newValue) => setFormData(prev => ({ 
-                    ...prev, 
+                onChange={(newValue) => setFormData(prev => ({
+                    ...prev,
                     tanggalPembelian: newValue
                 }))}
                 error={!!errors.tanggalPembelian}
@@ -164,8 +190,8 @@ export function TicketForm({
                 label="Masa Aktif"
                 name="masaAktif"
                 value={formData.masaAktif}
-                onChange={(newValue) => setFormData(prev => ({ 
-                    ...prev, 
+                onChange={(newValue) => setFormData(prev => ({
+                    ...prev,
                     masaAktif: newValue
                 }))}
                 error={!!errors.masaAktif}
@@ -188,6 +214,7 @@ export function TicketForm({
                     min: 0,
                     step: 1000,
                 }}
+                disabled
             />
 
             <SelectAtom
