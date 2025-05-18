@@ -9,12 +9,18 @@ import { useSchedules } from "../hooks/useSchedules";
 export function EditTicket() {
     const navigate = useNavigate();
     const { kodeTiket } = useParams();
-    const { tickets, updateTicket } = useTickets();
+    const { tickets, updateTicket, loading } = useTickets();
     const { passengers } = usePassengers();
     const { schedules } = useSchedules();
-
-    // Find the ticket to edit
     const ticket = tickets.find(t => t.kodeTiket === kodeTiket);
+
+    if (loading) {
+        return (
+            <div className="p-6 flex justify-center items-center min-h-[200px]">
+                <TypographyAtom variant="h5">Memuat data...</TypographyAtom>
+            </div>
+        );
+    }
 
     const handleSubmit = async (formData) => {
         try {
@@ -39,13 +45,12 @@ export function EditTicket() {
         );
     }
 
-    // Prepare initial values for the form
     const initialValues = {
         kodeTiket: ticket.kodeTiket,
         penumpang: {
             id: ticket.passengerId,
-            nama: passengers.find(p => p.id === ticket.passengerId)?.namaDepan + " " + 
-                  passengers.find(p => p.id === ticket.passengerId)?.namaBelakang
+            nama: passengers.find(p => p.id === ticket.passengerId)?.namaDepan + " " +
+                passengers.find(p => p.id === ticket.passengerId)?.namaBelakang
         },
         jadwal: {
             id: ticket.scheduleId,

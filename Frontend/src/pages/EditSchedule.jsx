@@ -8,11 +8,17 @@ import { usePlanes } from "../hooks/usePlanes";
 export function EditSchedule() {
     const navigate = useNavigate();
     const { kodePenerbangan } = useParams();
-    const { schedules, updateSchedule } = useSchedules();
+    const { schedules, updateSchedule, loading } = useSchedules();
     const { planes } = usePlanes();
-
-    // Find the schedule to edit
     const schedule = schedules.find(s => s.kodePenerbangan === kodePenerbangan);
+
+    if (loading) {
+        return (
+            <div className="p-6 flex justify-center items-center min-h-[200px]">
+                <TypographyAtom variant="h5">Memuat data...</TypographyAtom>
+            </div>
+        );
+    }
 
     const handleSubmit = async (formData) => {
         try {

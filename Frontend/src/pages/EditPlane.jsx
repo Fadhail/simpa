@@ -7,12 +7,16 @@ import { usePlanes } from "../hooks/usePlanes";
 export function EditPlane() {
     const navigate = useNavigate();
     const { kodePesawat } = useParams();
-    const { planes } = usePlanes();
+    const { planes, updatePlane, loading } = usePlanes();
+    const plane = planes.find(p => p.kodePesawat === kodePesawat);
 
-    // Find the plane to edit
-    const planeToEdit = planes.find(p => p.kodePesawat === kodePesawat);
-
-    const { updatePlane } = usePlanes();
+    if (loading) {
+        return (
+            <div className="p-6 flex justify-center items-center min-h-[200px]">
+                <TypographyAtom variant="h5">Memuat data...</TypographyAtom>
+            </div>
+        );
+    }
 
     const handleSubmit = async (formData) => {
         try {
@@ -21,13 +25,13 @@ export function EditPlane() {
         } catch (error) {
             console.error("Error updating plane:", error);
         }
-    };
+    }
 
     const handleCancel = () => {
         navigate("/planes");
-    };
+    }
 
-    if (!planeToEdit) {
+    if (!plane) {
         return (
             <div className="p-6">
                 <TypographyAtom variant="h4" className="mb-6">
@@ -45,7 +49,7 @@ export function EditPlane() {
 
             <Card className="p-6">
                 <PlaneForm
-                    initialValues={planeToEdit}
+                    initialValues={plane}
                     onSubmit={handleSubmit}
                     onCancel={handleCancel}
                     isEditing={true}

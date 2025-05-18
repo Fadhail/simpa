@@ -7,10 +7,16 @@ import { usePassengers } from "../hooks/usePassengers";
 export function EditPassenger() {
     const navigate = useNavigate();
     const { nik } = useParams();
-    const { passengers } = usePassengers();
-    const { updatePassenger } = usePassengers();
+    const { passengers, updatePassenger, loading } = usePassengers();
 
-    // Find the passenger to edit
+    if (loading) {
+        return (
+            <div className="p-6 flex justify-center items-center min-h-[200px]">
+                <TypographyAtom variant="h5">Memuat data...</TypographyAtom>
+            </div>
+        );
+    }
+
     const passenger = passengers.find(p => p.nik === nik);
 
     const handleSubmit = async (formData) => {
