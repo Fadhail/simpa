@@ -18,7 +18,7 @@ export function PassengerForm({
                 namaDepan: initialValues.namaLengkap?.namaDepan || '',
                 namaBelakang: initialValues.namaLengkap?.namaBelakang || ''
             },
-            jenisKelamin: initialValues.jenisKelamin || '',
+            jenisKelamin: initialValues.jenisKelamin || 'Laki-Laki',
             tanggalLahir: initialDate,
             alamat: {
                 jalan: initialValues.alamat?.jalan || '',
@@ -34,7 +34,7 @@ export function PassengerForm({
 
     const validate = () => {
         const newErrors = {};
-        
+
         if (!formData.nik) newErrors.nik = 'NIK wajib diisi';
         if (!formData.namaLengkap.namaDepan) newErrors.namaDepan = 'Nama Depan wajib diisi';
         if (!formData.namaLengkap.namaBelakang) newErrors.namaBelakang = 'Nama Belakang wajib diisi';
@@ -76,7 +76,7 @@ export function PassengerForm({
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         const nameParts = name.split('.');
-        
+
         if (nameParts.length === 2) {
             const [parent, child] = nameParts;
             setFormData(prev => ({
@@ -151,7 +151,7 @@ export function PassengerForm({
                 helperText={errors.tanggalLahir}
                 format="dd/MM/yyyy"
             />
-            
+
             <AlamatFormGroup
                 jalan={formData.alamat.jalan}
                 onChangeJalan={(e) => handleInputChange({ target: { name: 'alamat.jalan', value: e.target.value } })}

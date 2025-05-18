@@ -15,7 +15,7 @@ export function ScheduleForm({
         planeId: initialValues.planeId || '',
         asal: initialValues.asal || '',
         tujuan: initialValues.tujuan || '',
-        waktuBerangkat: initialValues.waktuBerangkat ? new Date(initialValues.waktuBerangkat) : null,
+        waktuBerangkat: initialValues.waktuBerangkat ? new Date(initialValues.waktuBerangkat) : new Date(),
         waktuTiba: initialValues.waktuTiba ? new Date(initialValues.waktuTiba) : null,
         status: initialValues.status || 'Terjadwal',
         hargaTiket: initialValues.hargaTiket ? parseFloat(initialValues.hargaTiket) : '',
@@ -25,7 +25,7 @@ export function ScheduleForm({
 
     const validate = () => {
         const newErrors = {};
-        
+
         if (!formData.kodePenerbangan) newErrors.kodePenerbangan = 'Kode penerbangan wajib diisi';
         if (!formData.planeId) newErrors.planeId = 'Pesawat wajib dipilih';
         if (!formData.asal) newErrors.asal = 'Asal wajib diisi';
