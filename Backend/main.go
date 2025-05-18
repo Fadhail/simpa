@@ -1,26 +1,25 @@
 package main
 
 import (
-	"fmt"
-	"simpa/config"
-	"simpa/router"
 	"log"
 	"os"
+	"simpa/config"
+	"simpa/router"
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
-	"github.com/joho/godotenv"
+	// "github.com/joho/godotenv"
 )
 
-func init() {
-	// Load file .env saat program dijalankan
-	err := godotenv.Load()
-	if err != nil {
-		fmt.Println("Gagal memuat file .env")
-	}
-}
+// func init() {
+// 	// Load file .env saat program dijalankan
+// 	err := godotenv.Load()
+// 	if err != nil {
+// 		fmt.Println("Gagal memuat file .env")
+// 	}
+// }
 
 func main() {
 	app := fiber.New()
